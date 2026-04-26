@@ -61,3 +61,27 @@ join employees e
     on s.emp_id = e.emp_id
 )
 where rn = 1
+
+
+select * from
+(
+SELECT e.emp_id,e.name,e.salary,e.dept,
+row_number() over(partition by dept order by salary desc) as rn
+from employees e)
+where rn = 1
+
+select * from(
+    select emp_id,name,dept,salary,
+    rank() over(partition by dept order by salary desc) as rnk
+    from employees
+)
+where rnk = 1
+
+
+SELECT 
+    emp_id,
+    name,
+    dept,
+    salary,
+    DENSE_RANK() OVER (PARTITION BY dept ORDER BY salary DESC) AS rnk
+FROM employees;
